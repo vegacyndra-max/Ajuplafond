@@ -22,15 +22,15 @@
     }
     *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans",sans-serif;color:var(--text);
-  /* HILANGKAN BACKGROUND BIRU: hanya pakai gambar yang kamu upload */
+  /* TAMPILKAN GELOMBANG ATAS/JELASKAN GAMBAR */
   background:
-    url('./bg-landing.png') center/cover no-repeat fixed,
-    url('./bg-landing.png.png') center/cover no-repeat fixed; /* fallback nama */
+    url('./bg-landing.png') center top / cover no-repeat fixed,
+    url('./bg-landing.png.png') center top / cover no-repeat fixed; /* fallback nama */
   background-color:#ffffff; /* fallback putih */
 }
 .bg-mask{position:fixed;inset:0;pointer-events:none;z-index:0;
-  /* mask terang agar teks tetap kebaca, gambar tetap dominan */
-  background:radial-gradient(ellipse at center, rgba(255,255,255,.32) 0%, rgba(255,255,255,.18) 34%, rgba(255,255,255,.08) 58%, rgba(255,255,255,0) 78%);
+  /* Mask lebih ringan agar gambar dominan */
+  background:radial-gradient(ellipse at center, rgba(255,255,255,.08) 0%, rgba(255,255,255,.04) 35%, rgba(255,255,255,0) 60%);
 }
 .wrap{max-width:1080px;margin:0 auto;padding:20px;position:relative;z-index:1}
     header{display:flex;align-items:center;gap:14px;padding:14px 0}
@@ -41,18 +41,23 @@ html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,
 
     /* ===== Slider fullscreen ===== */
     .viewport{position:relative;height:calc(100dvh - 110px);
-  border:1px solid rgba(255,255,255,.28); border-radius:var(--radius);
-  background:transparent; /* tidak ada overlay biru */
-  overflow:hidden; box-shadow:0 8px 18px rgba(0,0,0,.18)}
+  border:1px solid rgba(0,0,0,.08); border-radius:var(--radius);
+  background:transparent; /* tidak ada overlay */
+  overflow:hidden; box-shadow:0 6px 14px rgba(0,0,0,.14)}
     .track{display:flex; width:100%; height:100%; transition:transform .35s ease}
     .slide{min-width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:18px}
 
     .bigbtn{display:flex;align-items:center;justify-content:center;text-align:center;
-  width:min(880px,88%);height:min(64vh,500px);border-radius:22px;border:1px solid rgba(255,255,255,.75);
-  background:transparent; /* tidak ada overlay biru pada tombol */
+  width:min(880px,88%);height:min(64vh,500px);border-radius:22px;border:1px solid rgba(0,0,0,.15);
+  background:transparent; /* tetap transparan */
   color:var(--text);text-decoration:none;font-weight:800;font-size:min(7vw,46px);
-  line-height:1.15;letter-spacing:.2px;padding:24px;text-shadow:0 2px 6px rgba(0,0,0,.35);
+  line-height:1.15;letter-spacing:.2px;padding:24px;
+  /* >>> Shadow teks ditingkatkan agar judul kontras di atas background */
+  text-shadow: 0 4px 14px rgba(0,0,0,.60), 0 0 24px rgba(0,0,0,.45), 0 0 48px rgba(0,0,0,.35);
+  -webkit-text-stroke: .8px rgba(0,0,0,.35); /* stroke tipis sebagai penguat kontras */
   transition:transform .08s ease, background .2s ease, box-shadow .2s ease}
+.bigbtn:hover{background:rgba(255,255,255,.10);transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,0,0,.18)}
+.bigbtn:focus-visible{outline:3px solid #8ab4ff;outline-offset:4px}
 .bigbtn:hover{background:rgba(255,255,255,.12);transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,0,0,.22)}
 .bigbtn:focus-visible{outline:3px solid #8ab4ff;outline-offset:4px}
 .bigbtn:hover{background:rgba(9,20,40,.44); transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,.25)}
@@ -61,9 +66,12 @@ html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,
 
     /* Arrows */
     .arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;
-  width:58px;height:58px;border-radius:50%;border:1px solid rgba(255,255,255,.45);
-  background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;
+  width:58px;height:58px;border-radius:50%;border:1px solid rgba(0,0,0,.18);
+  background:rgba(255,255,255,.32);color:#111;display:flex;align-items:center;justify-content:center;
   cursor:pointer;transition:background .2s ease, transform .08s ease}
+.arrow:hover{background:rgba(255,255,255,.45)}
+.arrow:active{transform:translateY(-50%) scale(.98)}
+.arrow[disabled]{opacity:.45;cursor:not-allowed}
 .arrow:hover{background:rgba(255,255,255,.12)}
 .arrow:active{transform:translateY(-50%) scale(.98)}
 .arrow[disabled]{opacity:.45;cursor:not-allowed}
