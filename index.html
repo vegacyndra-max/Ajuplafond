@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <!-- 
+    ======================================================
+    LANDING PENDAFTARAN PLAFOND BRI — versi fullscreen slider
+    Cara pakai:
+    1) Ganti 4 URL di bagian KONFIGURASI (UMUM, ALUTSISTA, AMMEND, BRISURF)
+    2) (Opsional) Unggah logo.png ke repo & buka komentar <img> di bagian .brand
+    3) Commit sebagai `index.html` → Aktifkan GitHub Pages (Settings → Pages)
+    ======================================================
+  -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pendaftaran Plafond BRI</title>
+  <meta name="description" content="Portal pengajuan plafon kontra bank garansi (Askrindo × BRI)">
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root{
+      --bg:#0b1320; --card:#101a30; --accent:#1a2a52; --accent2:#172442; --text:#ffffff;
+      --muted:#a7b1c2; --ring:rgba(43,58,96,.55); --ringw:.5px; --radius:18px; --shadow:0 10px 24px rgba(0,0,0,.35)
+    }
+    *{box-sizing:border-box}
+    html,body{
+      font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+      color:var(--text);
+      /* Background image: upload file bernama `bg-landing.png` ke repo (root atau /assets),
+         lalu sesuaikan path di bawah jika perlu. */
+      background:
+        radial-gradient(ellipse at center, rgba(255,255,255,.85) 0%, rgba(255,255,255,.55) 40%, rgba(255,255,255,.15) 70%, rgba(11,19,32,.25) 100%),
+        url('./bg-landing.png') center/cover no-repeat fixed;
+      background-color:#0b1320;
+    }
+    body{
+      font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+      background:#0b1320; color:var(--text);
+    }
+    .wrap{max-width:1080px;margin:0 auto;padding:20px}
+    header{display:flex;align-items:center;gap:14px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand img{width:44px;height:44px;border-radius:12px;opacity:.95}
+    .brand h1{font-size:24px;margin:0;letter-spacing:.3px}
+    .subtitle{margin:2px 0 0 0;opacity:.8;font-size:14px}
+
+    /* ===== Slider fullscreen ===== */
+    .viewport{position:relative; height:calc(100dvh - 110px); /* header + padding */
+              border:var(--ringw) solid var(--ring); border-radius:var(--radius);
+              background:rgba(16,26,48,.12);
+              overflow:hidden; box-shadow:var(--shadow)}
+    .track{display:flex; width:100%; height:100%; transition:transform .35s ease}
+    .slide{min-width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:18px}
+
+    .bigbtn{display:flex; align-items:center; justify-content:center; text-align:center;
+            width:min(880px, 88%); height:min(68vh, 520px); border-radius:22px; border:var(--ringw) solid var(--ring);
+            background:var(--card); color:var(--text); text-decoration:none;
+            font-weight:800; font-size:min(7vw, 46px); line-height:1.15; letter-spacing:.2px;
+            padding:24px; transition:transform .08s ease, background .2s ease, box-shadow .2s ease}
+    .bigbtn:hover{background:var(--accent2); transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,.25)}
+    .bigbtn:focus-visible{outline:3px solid #8ab4ff; outline-offset:4px}
+
+
+    /* Arrows */
+    .arrow{position:absolute; top:50%; transform:translateY(-50%); z-index:5;
+           width:58px; height:58px; border-radius:50%; border:var(--ringw) solid var(--ring);
+           background:rgba(16,26,48,.85); color:#fff; display:flex; align-items:center; justify-content:center;
+           cursor:pointer; transition:background .2s ease, transform .08s ease}
+    .arrow:hover{background:rgba(23,36,66,.95)}
+    .arrow:active{transform:translateY(-50%) scale(.98)}
+    .arrow[disabled]{opacity:.45; cursor:not-allowed}
+    .prev{left:14px}
+    .next{right:14px}
+    .arrow svg{width:28px; height:28px}
+
+    /* Dots */
+    .dots{position:absolute; inset:auto 0 10px 0; display:flex; gap:8px; justify-content:center; z-index:4}
+    .dot{width:8px;height:8px;border-radius:50%; background:#5f6f90; border:1px solid #8aa0d1}
+    .dot[aria-current="true"]{background:#d7e3ff}
+
+    .foot{opacity:.7; font-size:12.5px; margin-top:10px; text-align:center}
+
+    /* Accessibility helpers */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    @media (max-width:640px){
+      .brand h1{font-size:20px}
+      .bigbtn{font-size:min(8.2vw, 40px); height:min(58vh, 420px)}
+      .arrow{width:52px;height:52px}
+      .arrow svg{width:24px;height:24px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <!-- Unggah `logo.png` ke repo lalu buka komentar ini -->
+        <!-- <img src="./logo.png" alt="Logo" /> -->
+        <div>
+          <h1>PENDAFTARAN PLAFOND BRI</h1>
+          <p class="subtitle">Geser tombol kiri/kanan atau gunakan panah keyboard. Data tersimpan otomatis di Google Sheets.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="viewport" aria-roledescription="carousel" aria-label="Menu pengajuan">
+      <button class="arrow prev" id="prev" aria-label="Sebelumnya">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="track" id="track">
+        <div class="slide" aria-roledescription="slide" aria-label="Ajukan Plafond Umum">
+          <a id="btn-umum" class="bigbtn" href="#" target="_blank" rel="noopener">Ajukan Plafond Umum</a>
+        </div>
+        <div class="slide" aria-roledescription="slide" aria-label="Ajukan Plafond Alutsista">
+          <a id="btn-alutsista" class="bigbtn" href="#" target="_blank" rel="noopener">Ajukan Plafond Alutsista</a>
+        </div>
+        <div class="slide" aria-roledescription="slide" aria-label="Ajukan Plafond Ammend">
+          <a id="btn-ammend" class="bigbtn" href="#" target="_blank" rel="noopener">Ajukan Plafond Ammend</a>
+        </div>
+        <div class="slide" aria-roledescription="slide" aria-label="Lanjut ke Brisurf">
+          <a id="btn-brisurf" class="bigbtn" href="#" target="_blank" rel="noopener">Lanjut ke Brisurf</a>
+        </div>
+      </div>
+      <button class="arrow next" id="next" aria-label="Berikutnya">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="dots" id="dots" aria-hidden="true"></div>
+    </section>
+
+    <p class="foot">Askrindo × BRI • <span id="today"></span></p>
+
+    <!-- OPSIONAL: Seksi dokumen. Kalau dokumen publik, taruh file PDF di folder /docs lalu pasang linknya di sini. 
+    <section class="docs">
+      <h3>Dokumen Cabang</h3>
+      <ul>
+        <li><a href="./docs/panduan-umum.pdf" target="_blank" rel="noopener">Panduan Pengajuan Umum (PDF)</a></li>
+        <li><a href="./docs/panduan-alutsista.pdf" target="_blank" rel="noopener">Panduan Pengajuan Alutsista (PDF)</a></li>
+        <li><a href="https://drive.google.com/drive/folders/ID-FOLDER" target="_blank" rel="noopener">Folder Dokumen (Google Drive)</a></li>
+      </ul>
+    </section>
+    -->
+  </div>
+
+  <!-- ===================== KONFIGURASI =====================
+       Ganti nilai URL di bawah ini dengan link prefilled Google Form & Brisurf Anda.
+       Biarkan tanda kutip. Contoh: "https://forms.gle/abc123"  -->
+  <script>
+    const LINKS = {
+      UMUM:      "https://forms.gle/fqJqHnifcdva5A687", // ← PASTE LINK PREFILLED FORM (Jenis = Umum)
+      ALUTSISTA: "", // ← PASTE LINK PREFILLED FORM (Jenis = Alutsista)
+      AMMEND:    "", // ← PASTE LINK PREFILLED FORM (Jenis = Ammend)
+      BRISURF:   "http://10.10.1.247:81/klaimbri/login"  // ← PASTE LINK BRISURF
+    };
+
+    // ====== Helper untuk set tautan & disabled state ======
+    function setHref(id, url){
+      const el = document.getElementById(id);
+      if (!url || !/^https?:\/\//.test(url)) {
+        el.addEventListener('click', (e)=> e.preventDefault());
+        el.setAttribute('aria-disabled','true');
+        el.style.opacity = .6;
+        const n = document.getElementById('notice'); if(n) n.hidden = false;
+      } else { el.href = url; }
+    }
+    setHref('btn-umum', LINKS.UMUM);
+    setHref('btn-alutsista', LINKS.ALUTSISTA);
+    setHref('btn-ammend', LINKS.AMMEND);
+    setHref('btn-brisurf', LINKS.BRISURF);
+
+    // ====== Slider logic ======
+    const track = document.getElementById('track');
+    const slides = Array.from(track.children);
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const dotsWrap = document.getElementById('dots');
+    let index = 0;
+
+    function update(){
+      track.style.transform = `translateX(${-index*100}%)`;
+      // manage disabled state
+      prevBtn.toggleAttribute('disabled', index === 0);
+      nextBtn.toggleAttribute('disabled', index === slides.length-1);
+      // update dots
+      dotsWrap.querySelectorAll('.dot').forEach((d,i)=>{
+        d.setAttribute('aria-current', i===index ? 'true':'false');
+      });
+    }
+
+    // build dots
+    slides.forEach((_,i)=>{
+      const d = document.createElement('button');
+      d.className = 'dot'; d.type = 'button'; d.title = `Slide ${i+1}`;
+      d.addEventListener('click', ()=>{ index = i; update(); });
+      dotsWrap.appendChild(d);
+    });
+
+    prevBtn.addEventListener('click', ()=>{ if(index>0){ index--; update(); }});
+    nextBtn.addEventListener('click', ()=>{ if(index<slides.length-1){ index++; update(); }});
+
+    // keyboard navigation
+    window.addEventListener('keydown', (e)=>{
+      if(e.key==='ArrowLeft') prevBtn.click();
+      if(e.key==='ArrowRight') nextBtn.click();
+    });
+
+    // touch swipe
+    let startX=null; let dragging=false;
+    track.addEventListener('pointerdown', (e)=>{ startX=e.clientX; dragging=true; });
+    window.addEventListener('pointerup', (e)=>{
+      if(!dragging) return; dragging=false;
+      const dx = e.clientX - startX; const threshold = 40;
+      if(dx > threshold && index>0) { index--; update(); }
+      else if(dx < -threshold && index<slides.length-1) { index++; update(); }
+    });
+
+    // tanggal footer
+    try{
+      const today = new Date();
+      const fmt = new Intl.DateTimeFormat('id-ID', { day:'2-digit', month:'long', year:'numeric' });
+      document.getElementById('today').textContent = fmt.format(today);
+    }catch(err){}
+
+    update();
+  </script>
+</body>
+</html>
