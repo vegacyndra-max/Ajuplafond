@@ -20,8 +20,17 @@
       --bg:#0b1320; --card:#101a30; --accent:#1a2a52; --accent2:#172442; --text:#ffffff;
       --muted:#a7b1c2; --ring:rgba(43,58,96,.55); --ringw:.5px; --radius:18px; --shadow:0 10px 24px rgba(0,0,0,.35)
     }
-    *{box-sizing:border-box}$1.bg-mask{position:fixed;inset:0;pointer-events:none;z-index:0;background:
-  radial-gradient(ellipse at center, rgba(255,255,255,.36) 0%, rgba(255,255,255,.22) 28%, rgba(255,255,255,.12) 46%, rgba(255,255,255,.06) 62%, rgba(255,255,255,0) 78%);
+    *{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans",sans-serif;color:var(--text);
+  /* HILANGKAN BACKGROUND BIRU: hanya pakai gambar yang kamu upload */
+  background:
+    url('./bg-landing.png') center/cover no-repeat fixed,
+    url('./bg-landing.png.png') center/cover no-repeat fixed; /* fallback nama */
+  background-color:#ffffff; /* fallback putih */
+}
+.bg-mask{position:fixed;inset:0;pointer-events:none;z-index:0;
+  /* mask terang agar teks tetap kebaca, gambar tetap dominan */
+  background:radial-gradient(ellipse at center, rgba(255,255,255,.32) 0%, rgba(255,255,255,.18) 34%, rgba(255,255,255,.08) 58%, rgba(255,255,255,0) 78%);
 }
 .wrap{max-width:1080px;margin:0 auto;padding:20px;position:relative;z-index:1}
     header{display:flex;align-items:center;gap:14px;padding:14px 0}
@@ -31,31 +40,33 @@
     .subtitle{margin:2px 0 0 0;opacity:.85;font-size:14px}
 
     /* ===== Slider fullscreen ===== */
-    .viewport{position:relative; height:calc(100dvh - 110px);
-  border:var(--ringw) solid rgba(255,255,255,.24); border-radius:var(--radius);
-  background:rgba(8,18,36,.035); /* makin transparan agar background terlihat */
-  backdrop-filter:saturate(115%) blur(1.2px);
-  overflow:hidden; box-shadow:0 10px 22px rgba(0,0,0,.22)}
+    .viewport{position:relative;height:calc(100dvh - 110px);
+  border:1px solid rgba(255,255,255,.28); border-radius:var(--radius);
+  background:transparent; /* tidak ada overlay biru */
+  overflow:hidden; box-shadow:0 8px 18px rgba(0,0,0,.18)}
     .track{display:flex; width:100%; height:100%; transition:transform .35s ease}
     .slide{min-width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:18px}
 
-    .bigbtn{display:flex; align-items:center; justify-content:center; text-align:center;
-  width:min(880px, 88%); height:min(64vh, 500px); border-radius:22px; border:1px solid rgba(255,255,255,.22);
-  background:rgba(9,20,40,.16); /* TURUNKAN opacity tombol */
-  color:var(--text); text-decoration:none; font-weight:800; font-size:min(7vw, 46px);
-  line-height:1.15; letter-spacing:.2px; padding:24px; text-shadow:0 2px 6px rgba(0,0,0,.35);
+    .bigbtn{display:flex;align-items:center;justify-content:center;text-align:center;
+  width:min(880px,88%);height:min(64vh,500px);border-radius:22px;border:1px solid rgba(255,255,255,.75);
+  background:transparent; /* tidak ada overlay biru pada tombol */
+  color:var(--text);text-decoration:none;font-weight:800;font-size:min(7vw,46px);
+  line-height:1.15;letter-spacing:.2px;padding:24px;text-shadow:0 2px 6px rgba(0,0,0,.35);
   transition:transform .08s ease, background .2s ease, box-shadow .2s ease}
-.bigbtn:hover{background:rgba(9,20,40,.26); transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,.25)}
-.bigbtn:focus-visible{outline:3px solid #8ab4ff; outline-offset:4px}
+.bigbtn:hover{background:rgba(255,255,255,.12);transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,0,0,.22)}
+.bigbtn:focus-visible{outline:3px solid #8ab4ff;outline-offset:4px}
 .bigbtn:hover{background:rgba(9,20,40,.44); transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,.25)}
 .bigbtn:focus-visible{outline:3px solid #8ab4ff; outline-offset:4px}
 
 
     /* Arrows */
-    .arrow{position:absolute; top:50%; transform:translateY(-50%); z-index:5;
-  width:58px; height:58px; border-radius:50%; border:1px solid rgba(255,255,255,.18);
-  background:rgba(8,18,36,.24); color:#fff; display:flex; align-items:center; justify-content:center;
-  cursor:pointer; transition:background .2s ease, transform .08s ease}
+    .arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;
+  width:58px;height:58px;border-radius:50%;border:1px solid rgba(255,255,255,.45);
+  background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .2s ease, transform .08s ease}
+.arrow:hover{background:rgba(255,255,255,.12)}
+.arrow:active{transform:translateY(-50%) scale(.98)}
+.arrow[disabled]{opacity:.45;cursor:not-allowed}
 .arrow:hover{background:rgba(8,18,36,.36)}
 .arrow:active{transform:translateY(-50%) scale(.98)}
 .arrow[disabled]{opacity:.45; cursor:not-allowed}
